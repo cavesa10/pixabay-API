@@ -1,14 +1,35 @@
-import React from "react";
+import React, {useState} from "react";
 
-export const Formulario = () => {
+import {Error} from './Error'
+
+export const Formulario = ({setBusqueda}) => {
+
+  const [termino, setTermino] = useState('')
+  const [error, setError] = useState(false)
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+
+    // Validar 
+    if(termino.trim() === ''){
+      setError(true)
+      return
+    }
+    setError(false)
+
+    // envir el termino de busqueda hacia el componente principal
+    setBusqueda(termino)
+  }
+
   return (
-    <form>
+    <form onSubmit={handleSubmit} >
       <div className="row">
         <div className="form-group col-md-8">
           <input
             type="text"
             className="form-control form-control-lg"
             placeholder="Busca Una imagen, ejemplo: fútbol o café"
+            onChange = { (e) => setTermino(e.target.value) }
           />
         </div>
         <div className="form-group col-md-4">
@@ -19,6 +40,7 @@ export const Formulario = () => {
           />
         </div>
       </div>
+      {error ? <Error msj="Agregar un término de búsqueda" />: null}
     </form>
   );
 };
