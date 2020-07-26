@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Formulario } from "./components/Formulario";
+import { ListadoImagenes } from "./components/ListadoImagenes";
 
 function App() {
   // statee de la app
   const [busqueda, setBusqueda] = useState("");
+  const [imagenes, setImagenes] = useState([])
 
   useEffect(() => {
     
@@ -15,7 +17,7 @@ function App() {
       const url = `https://pixabay.com/api/?key=${key}&q=${busqueda}&per_page=${imagenesPorPagina}`;
       const respuesta = await fetch (url)
       const resultado = await respuesta.json()
-      console.log(resultado.hits)
+      setImagenes(resultado.hits)
     };
     consultaAPI();
   }, [busqueda]);
@@ -26,6 +28,11 @@ function App() {
         <p className="lead text-center">Buscador de Imágenes</p>
         <Formulario setBusqueda={setBusqueda} />
       </div>
+      <div className="row justify-content-center">
+        <ListadoImagenes
+          imagenes={imagenes}
+        />
+      </div> 
     </div>
   );
 }
